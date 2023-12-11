@@ -3,6 +3,7 @@ package com.example.myup.controller;
 import com.example.myup.dto.CardDto;
 import com.example.myup.service.CardService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @Transactional(readOnly = true)
 public class CardController {
-
     private CardService cardService;
 
     @PostMapping
