@@ -4,16 +4,19 @@ import com.example.myup.dto.UserDto;
 import com.example.myup.entity.User;
 import com.example.myup.mapper.UserMapper;
 import com.example.myup.repository.UserRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private UserMapper userMapper;
-    private UserRepository userRepository;
+
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Override
     public void save(UserDto userDto) {
@@ -22,28 +25,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getById(Long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        if (optionalUser.isEmpty()) {
-            throw new IllegalStateException("User with id: " + id + " not found");
-        }
-        User user = optionalUser.get();
+    public UserDto getById(String id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id: " + id + " not found"));
         return userMapper.toDto(user);
     }
 
     @Override
-    public void update(Long id, UserDto userDto) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        if (optionalUser.isEmpty()) {
-            throw new IllegalStateException("User with id: " + id + " not found");
-        }
-        User existingUser = optionalUser.get();
+    public List<UserDto> getAll() {
+        List<User> allUsers = userRepository.findAll();
+        return userMapper.toDtos(allUsers);
+    }
+
+    @Override
+    public void update(String id, UserDto userDto) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id: " + id + " not found"));
         userMapper.update(existingUser, userDto);
         save(userDto);
     }
 
     @Override
-    public void deleteById(Long id) {
-        userRepository.deleteById(id);
+    public void deleteById(String id) {
+        try {
+            userRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED, e.getMessage());
+        }
     }
 }

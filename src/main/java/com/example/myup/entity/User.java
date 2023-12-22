@@ -1,17 +1,20 @@
 package com.example.myup.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Entity
-@Table(name = "tbl_user")
-@Setter
-@Getter
+@EqualsAndHashCode(callSuper = true)
+@Document
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class User extends AbstractEntity {
@@ -22,12 +25,13 @@ public class User extends AbstractEntity {
 
     private String fatherName;
 
-    @Column(name = "national_code",unique = true,length = 10)
+    @Column(name = "national_code", unique = true, length = 10)
     private String nationalCode;
-    @Column(unique = true,length = 11)
+
+    @Column(unique = true, length = 11)
     private String phoneNumber;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Account> accounts;
 
 

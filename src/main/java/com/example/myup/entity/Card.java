@@ -1,22 +1,23 @@
 package com.example.myup.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotEmpty;
-import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
-@Entity
-@Table(name = "tbl-card")
-@Setter
-@Getter
+@EqualsAndHashCode(callSuper = true)
+@Document
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Card extends AbstractEntity {
+
     private String cardNumber;
-    private Date expieDate;
+
+    private Date expireDate;
+
     private Integer ccv2;
 }

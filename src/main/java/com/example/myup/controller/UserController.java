@@ -5,39 +5,35 @@ import com.example.myup.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
 @AllArgsConstructor
-@Transactional(readOnly = true)
 public class UserController {
 
     private UserService userService;
 
     @PostMapping
-    @Transactional
-    public ResponseEntity<Void> create(@Validated @RequestBody UserDto userDto) {
+    public ResponseEntity<Void> create(@RequestBody UserDto userDto) {
         userService.save(userDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getById(@PathVariable Long id) {
+    public ResponseEntity<UserDto> getById(@PathVariable String id) {
         UserDto dto = userService.getById(id);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
     @PutMapping("{id}")
-    @Transactional
-    public void update(@PathVariable Long id, @RequestBody UserDto userDto) {
+    public void update(@PathVariable String id, @RequestBody UserDto userDto) {
         userService.update(id, userDto);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteById(@PathVariable Long id) {
+    public ResponseEntity<String> deleteById(@PathVariable String id) {
         try {
             userService.deleteById(id);
             return ResponseEntity.ok("User with id: " + id + " deleted successfully.");

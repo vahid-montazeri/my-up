@@ -2,14 +2,19 @@ package com.example.myup.service;
 
 import com.example.myup.dto.CardDto;
 
+import java.util.List;
+
 public interface CardService {
 
 
     void save(CardDto cardDto);
 
-    CardDto getById(Long id);
+    CardDto getById(String id);
 
-    void update(Long id, CardDto cardDto);
+    List<CardDto> getAll();
 
-    void deleteById(Long id);
+
+    void update(String id, CardDto cardDto);
+
+    void deleteById(String id);
 }
