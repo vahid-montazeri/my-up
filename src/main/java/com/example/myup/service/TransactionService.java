@@ -2,15 +2,19 @@ package com.example.myup.service;
 
 import com.example.myup.dto.TransactionDto;
 
+import java.util.List;
+
 public interface TransactionService {
 
     void save(TransactionDto transactionDto);
 
-    TransactionDto getById(Long id);
+    TransactionDto getById(String id);
 
-    void update(Long id, TransactionDto transactionDto);
+    List<TransactionDto> getAll();
 
-    void deleteById(Long id);
+    void update(String id, TransactionDto transactionDto);
+
+    void deleteById(String id);
 
 
 }
